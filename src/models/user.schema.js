@@ -1,7 +1,8 @@
 import Joi from 'joi';
+import dayjs from 'dayjs';
 
 const schema = Joi.object({
-  username: Joi
+  name: Joi
     .string()
     .alphanum()
     .min(2)
