@@ -13,6 +13,7 @@ async function create(req, res) {
   try {
     const participant = await participantService.findByName(name);
     if (participant) return res.sendStatus(409);
+
     await participantService.create({ name, lastStatus });
 
     await messageService.create({
@@ -29,4 +30,8 @@ async function create(req, res) {
   }
 }
 
-export default { create };
+async function list(req, res) {
+  const participants = await participantService.findAll();
+  res.send(participants);
+}
+export default { create, list };
