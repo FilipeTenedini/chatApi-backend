@@ -7,16 +7,16 @@ async function create(req, res) {
   const { to, text, type } = req.body;
   const { user } = req.headers;
 
-  try {
-    if (messageSchema.validate({
-      to,
-      text,
-      type,
-      from: user,
-    }).error) return res.status(422).send('object infos error');
+  if (messageSchema.validate({
+    to,
+    text,
+    type,
+    from: user,
+  }).error) return res.sendStatus(422);
 
+  try {
     const participant = await participantService.findByName(user);
-    if (!participant) return res.status(422).send('participant not connected');
+    if (!participant) return res.sendStatus(422);
 
     await messageService.create({
       to,
@@ -34,16 +34,18 @@ async function create(req, res) {
 async function show(req, res) {
   const { user } = req.headers;
   const { limit } = req.query;
-  if (limit <= 0 || typeof (limit) === 'string') return res.sendStatus(422);
+
   try {
-    const mesages = await messageService.findByName(user);
+    const messages = await messageService.findByName(user);
     if (limit) {
-      res.send(mesages.slice(0, limit));
+      if (limit <= 0 || Number.isNaN(Number(limit))) return res.sendStatus(422);
+      res.send(messages.slice(0, limit));
     } else {
-      return res.send(mesages);
+      return res.send(messages);
     }
   } catch (err) {
     console.log(err.message);
   }
 }
+
 export default { create, show };
