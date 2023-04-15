@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import messageControler from '../controllers/message.controller.js';
+import messageController from '../controllers/message.controller.js';
 
 const route = Router();
 
-route.post('/', messageControler.create);
-route.get('/', messageControler.show);
+route.post('/', messageController.create);
+route.get('/', messageController.show);
+// route.delete('/:id', messageController.delete);
+// route.put('/:id', messageController.update);
 
 export default route;

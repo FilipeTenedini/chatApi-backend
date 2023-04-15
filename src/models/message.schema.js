@@ -7,9 +7,9 @@ const method = (value) => {
 };
 
 const messageSchema = Joi.object({
-  to: Joi.string().min(1),
-  text: Joi.string().min(1),
-  type: Joi.custom(method),
+  to: Joi.string().min(1).required(),
+  text: Joi.string().min(1).required(),
+  type: Joi.custom(method).required(),
   from: Joi.required(),
 });
 

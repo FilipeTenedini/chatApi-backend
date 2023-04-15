@@ -7,7 +7,7 @@ async function create(req, res) {
 
   try {
     const participant = await participantService.findByName(user);
-    if (!participant) return res.status(404);
+    if (!participant) return res.sendStatus(404);
 
     await participantService.update(user);
     res.sendStatus(200);
