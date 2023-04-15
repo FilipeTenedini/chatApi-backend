@@ -30,8 +30,8 @@ async function create(req, res) {
   }
 }
 
-async function list(req, res) {
+async function show(req, res) {
   const participants = await participantService.findAll();
   res.send(participants);
 }
-export default { create, list };
+export default { create, show };

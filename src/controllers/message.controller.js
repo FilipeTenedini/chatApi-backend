@@ -31,4 +31,19 @@ async function create(req, res) {
   }
 }
 
-export default { create };
+async function show(req, res) {
+  const { user } = req.headers;
+  const { limit } = req.query;
+  if (limit <= 0 || typeof (limit) === 'string') return res.sendStatus(422);
+  try {
+    const mesages = await messageService.findByName(user);
+    if (limit) {
+      res.send(mesages.slice(0, limit));
+    } else {
+      return res.send(mesages);
+    }
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+export default { create, show };
