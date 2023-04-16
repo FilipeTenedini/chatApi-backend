@@ -68,7 +68,7 @@ async function update(req, res) {
     if (!msg) return res.sendStatus(404);
     if (user !== msg.from) return res.sendStatus(401);
     await messageService.updateMsg(id, { to, text, type });
-    res.sendStatus(200g);
+    res.sendStatus(200);
   } catch (err) {
     console.log(err);
   }
