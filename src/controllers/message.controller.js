@@ -48,4 +48,24 @@ async function show(req, res) {
   }
 }
 
-export default { create, show };
+async function destroy(req, res) {
+  const { id } = req.params;
+  const { user } = req.headers;
+
+  try {
+    const msg = await messageService.findById(id);
+
+    if (!msg) return res.sendStatus(404);
+
+    if (user !== msg.from) return res.sendStatus(401);
+
+    console.log('temo aki');
+    const { deletedCount } = await messageService.deleteMsg(id);
+    console.log(deletedCount);
+
+    return res.sendStatus(200);
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+export default { create, show, destroy };
