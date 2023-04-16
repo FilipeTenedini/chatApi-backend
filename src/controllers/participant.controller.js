@@ -6,7 +6,6 @@ import userSchema from '../models/user.schema.js';
 async function create(req, res) {
   const { name } = req.body;
   const { value, error } = userSchema.validate({ name });
-
   if (error) return res.sendStatus(422);
 
   const lastStatus = Date.now();

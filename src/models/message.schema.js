@@ -8,10 +8,29 @@ const confirmTypeMsg = (value) => {
 };
 
 const messageSchema = Joi.object({
-  to: Joi.string().min(1).custom(sanitizeRequest).required(),
-  text: Joi.string().min(1).custom(sanitizeRequest).required(),
-  type: Joi.custom(confirmTypeMsg).custom(sanitizeRequest).required(),
-  from: Joi.custom(sanitizeRequest).required(),
+  to: Joi
+    .string()
+    .trim(true)
+    .min(1)
+    .custom(sanitizeRequest)
+    .required(),
+  text: Joi
+    .string()
+    .trim(true)
+    .min(1)
+    .custom(sanitizeRequest)
+    .required(),
+  type: Joi
+    .string()
+    .trim(true)
+    .custom(confirmTypeMsg)
+    .custom(sanitizeRequest)
+    .required(),
+  from: Joi
+    .string()
+    .trim(true)
+    .custom(sanitizeRequest)
+    .required(),
 });
 
 export default messageSchema;
