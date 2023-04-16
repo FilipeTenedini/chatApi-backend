@@ -7,11 +7,10 @@ const findByName = (user) => db.collection('messages').find({ $or: [{ to: user }
 
 const findById = (id) => db.collection('messages').findOne({ _id: new ObjectId(id) });
 
+const updateMsg = (id, body) => db.collection('messages').updateOne({ _id: new ObjectId(id) }, { $set: body });
+
 const deleteMsg = (id) => db.collection('messages').deleteOne({ _id: new ObjectId(id) });
 
 export default {
-  create,
-  findByName,
-  findById,
-  deleteMsg,
+  create, findByName, findById, deleteMsg, updateMsg,
 };

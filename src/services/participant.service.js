@@ -6,8 +6,5 @@ const findAll = () => db.collection('participants').find().toArray();
 const update = (user) => db.collection('participants').updateOne({ name: user }, { $set: { lastStatus: Date.now() } });
 
 export default {
-  findByName,
-  create,
-  findAll,
-  update,
+  findByName, create, findAll, update,
 };

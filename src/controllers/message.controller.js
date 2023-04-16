@@ -48,6 +48,32 @@ async function show(req, res) {
   }
 }
 
+async function update(req, res) {
+  const { to, text, type } = req.body;
+  const { user } = req.headers;
+  const { id } = req.params;
+
+  if (messageSchema.validate({
+    to,
+    text,
+    type,
+    from: user,
+  }).error) return res.sendStatus(422);
+
+  try {
+    const participant = await participantService.findByName(user);
+    if (!participant) return res.sendStatus(422);
+
+    const msg = await messageService.findById(id);
+    if (!msg) return res.sendStatus(404);
+    if (user !== msg.from) return res.sendStatus(401);
+    await messageService.updateMsg(id, { to, text, type });
+    res.sendStatus(201);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 async function destroy(req, res) {
   const { id } = req.params;
   const { user } = req.headers;
@@ -68,4 +94,6 @@ async function destroy(req, res) {
     console.log(err.message);
   }
 }
-export default { create, show, destroy };
+export default {
+  create, show, destroy, update,
+};
