@@ -6,23 +6,16 @@ import messageSchema from '../models/message.schema.js';
 async function create(req, res) {
   const { to, text, type } = req.body;
   const { user } = req.headers;
-
-  if (messageSchema.validate({
-    to,
-    text,
-    type,
-    from: user,
-  }).error) return res.sendStatus(422);
+  const { value, error } = messageSchema.validate({
+    to, text, type, from: user,
+  });
+  if (error) return res.sendStatus(422);
 
   try {
     const participant = await participantService.findByName(user);
     if (!participant) return res.sendStatus(422);
-
     await messageService.create({
-      to,
-      text,
-      type,
-      from: user,
+      ...value,
       time: dayjs(Date.now()).format('HH:mm:ss'),
     });
     res.sendStatus(201);
@@ -53,12 +46,11 @@ async function update(req, res) {
   const { user } = req.headers;
   const { id } = req.params;
 
-  if (messageSchema.validate({
-    to,
-    text,
-    type,
-    from: user,
-  }).error) return res.sendStatus(422);
+  const { value, error } = messageSchema.validate({
+    to, text, type, from: user,
+  });
+
+  if (error) return res.sendStatus(422);
 
   try {
     const participant = await participantService.findByName(user);
@@ -66,11 +58,13 @@ async function update(req, res) {
 
     const msg = await messageService.findById(id);
     if (!msg) return res.sendStatus(404);
+
     if (user !== msg.from) return res.sendStatus(401);
-    await messageService.updateMsg(id, { to, text, type });
+
+    await messageService.updateMsg(id, { ...value });
     res.sendStatus(200);
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 }
 
