@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
-import userSchema from '../models/user.schema.js';
 import participantService from '../services/participant.service.js';
 import messageService from '../services/message.service.js';
+import userSchema from '../models/user.schema.js';
+import sanitizeRequest from '../models/sanitize-html.js';
 
 async function create(req, res) {
   const { name } = req.body;
