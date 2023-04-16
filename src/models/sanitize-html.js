@@ -4,7 +4,7 @@ const sanitizeRequest = (value) => {
   const sanitizedString = sanitizeHtml(value, {
     allowedTags: [],
   });
-  return sanitizedString;
+  return sanitizedString.trim();
 };
 
 export default sanitizeRequest;

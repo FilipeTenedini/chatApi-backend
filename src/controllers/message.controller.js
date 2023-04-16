@@ -54,7 +54,7 @@ async function update(req, res) {
   if (error) return res.sendStatus(422);
 
   try {
-    const participant = await participantService.findByName(user);
+    const participant = await participantService.findByName({ name: user });
     if (!participant) return res.sendStatus(422);
 
     const msg = await messageService.findById(id);
