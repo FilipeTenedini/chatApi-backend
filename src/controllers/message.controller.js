@@ -79,15 +79,14 @@ async function destroy(req, res) {
 
     if (user !== msg.from) return res.sendStatus(401);
 
-    console.log('temo aki');
     const { deletedCount } = await messageService.deleteMsg(id);
-    console.log(deletedCount);
 
-    return res.sendStatus(200);
+    if (deletedCount) return res.sendStatus(200);
   } catch (err) {
     console.log(err.message);
   }
 }
+
 export default {
   create, show, destroy, update,
 };
