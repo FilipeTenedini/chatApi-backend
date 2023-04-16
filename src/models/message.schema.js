@@ -4,7 +4,7 @@ import sanitizeRequest from './sanitize-html.js';
 const confirmTypeMsg = (value) => {
   if (value === 'message' || value === 'private_message') return value;
 
-  throw new Error('Invalid Type');
+  throw new Error('Invalid Message Type');
 };
 
 const messageSchema = Joi.object({

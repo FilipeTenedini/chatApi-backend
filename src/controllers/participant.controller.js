@@ -2,23 +2,23 @@ import dayjs from 'dayjs';
 import participantService from '../services/participant.service.js';
 import messageService from '../services/message.service.js';
 import userSchema from '../models/user.schema.js';
-import sanitizeRequest from '../models/sanitize-html.js';
 
 async function create(req, res) {
   const { name } = req.body;
+  const { value, error } = userSchema.validate({ name });
 
-  if (userSchema.validate({ name }).error) return res.sendStatus(422);
+  if (error) return res.sendStatus(422);
 
   const lastStatus = Date.now();
 
   try {
-    const participant = await participantService.findByName(name);
+    const participant = await participantService.findByName(value);
     if (participant) return res.sendStatus(409);
 
-    await participantService.create({ name, lastStatus });
+    await participantService.create({ ...value, lastStatus });
 
     await messageService.create({
-      from: name,
+      from: value.name,
       to: 'Todos',
       text: 'entra na sala...',
       type: 'status',

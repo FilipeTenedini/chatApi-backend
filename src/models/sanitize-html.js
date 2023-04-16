@@ -1,12 +1,10 @@
 import sanitizeHtml from 'sanitize-html';
 
 const sanitizeRequest = (value) => {
-  const sanitizedValue = sanitizeHtml(value, {
+  const sanitizedString = sanitizeHtml(value, {
     allowedTags: [],
-    allowedSchemes: [],
   });
-  console.log(sanitizedValue);
-  return sanitizedValue.trim();
+  return sanitizedString;
 };
 
 export default sanitizeRequest;
