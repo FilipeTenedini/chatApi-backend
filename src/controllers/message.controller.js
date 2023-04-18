@@ -10,11 +10,11 @@ async function create(req, res) {
     to, text, type, from: user,
   });
   if (error) return res.sendStatus(422);
-
+  if (!value.text) return res.sendStatus(422);
   try {
     const participant = await participantService.findByName({ name: user });
     if (!participant) return res.sendStatus(422);
-    console.log({ ...value, time: dayjs(Date.now()).format('HH:mm:ss') });
+
     await messageService.create({
       ...value,
       time: dayjs(Date.now()).format('HH:mm:ss'),
@@ -30,11 +30,12 @@ async function show(req, res) {
   const { limit } = req.query;
 
   try {
-    const messages = await messageService.findByName(user);
     if (limit) {
       if (limit <= 0 || Number.isNaN(Number(limit))) return res.sendStatus(422);
-      res.send(messages.slice(0, limit));
+      const messages = await messageService.findByName(user);
+      res.send(messages);
     } else {
+      const messages = await messageService.findByName(user);
       return res.send(messages);
     }
   } catch (err) {

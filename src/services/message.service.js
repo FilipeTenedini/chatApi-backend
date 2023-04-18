@@ -5,7 +5,9 @@ const create = (body) => db.collection('messages').insertOne(body);
 
 const createMsgs = (list) => db.collection('messages').insertMany(list);
 
-const findByName = (user) => db.collection('messages').find({ $or: [{ to: user }, { to: 'Todos' }, { from: user }] }).toArray();
+const findByName = (user, limit) => db.collection('messages').find({ $or: [{ to: user }, { to: 'Todos' }, { from: user }] }).sort()
+  .limit(limit || 0)
+  .toArray();
 
 const findById = (id) => db.collection('messages').findOne({ _id: new ObjectId(id) });
 
