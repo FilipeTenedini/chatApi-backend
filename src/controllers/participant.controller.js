@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import participantService from '../services/participant.service.js';
-import messageService from '../services/message.service.js';
+import participantRepository from '../repositories/participant.repository.js';
+import messageRepository from '../repositories/message.repository.js';
 import userSchema from '../models/user.schema.js';
 
 async function create(req, res) {
@@ -11,12 +11,12 @@ async function create(req, res) {
   const lastStatus = Date.now();
 
   try {
-    const participant = await participantService.findByName(value);
+    const participant = await participantRepository.findByName(value);
     if (participant) return res.sendStatus(409);
 
-    await participantService.create({ ...value, lastStatus });
+    await participantRepository.create({ ...value, lastStatus });
 
-    await messageService.create({
+    await messageRepository.create({
       from: value.name,
       to: 'Todos',
       text: 'entra na sala...',
@@ -31,7 +31,7 @@ async function create(req, res) {
 }
 
 async function show(req, res) {
-  const participants = await participantService.findAll();
+  const participants = await participantRepository.findAll();
   res.send(participants);
 }
 export default { create, show };

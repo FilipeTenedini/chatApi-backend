@@ -1,4 +1,4 @@
-import participantService from '../services/participant.service.js';
+import participantRepository from '../repositories/participant.repository.js';
 
 async function create(req, res) {
   const { user } = req.headers;
@@ -6,10 +6,10 @@ async function create(req, res) {
   if (!user) return res.sendStatus(404);
 
   try {
-    const participant = await participantService.findByName({ name: user });
+    const participant = await participantRepository.findByName({ name: user });
     if (!participant) return res.sendStatus(404);
 
-    await participantService.update(user);
+    await participantRepository.update(user);
     res.sendStatus(200);
   } catch (err) {
     console.log(err.message);

@@ -1,17 +1,17 @@
 import dayjs from 'dayjs';
-import participantService from '../services/participant.service.js';
-import messageService from '../services/message.service.js';
+import participantRepository from '../repositories/participant.repository.js';
+import messageRepository from '../repositories/message.repository.js';
 
 function removeInactiveParticipants() {
   setInterval(async () => {
     try {
       const tenSecondsAgo = Date.now() - 10000;
-      const inactiveUsers = await participantService.find(tenSecondsAgo);
+      const inactiveUsers = await participantRepository.find(tenSecondsAgo);
       const inactiveUsersId = inactiveUsers.map((user) => user._id);
 
       if (inactiveUsers.length > 0) {
         console.log(inactiveUsers);
-        await participantService.destroy(inactiveUsersId);
+        await participantRepository.destroy(inactiveUsersId);
 
         const inactiveUsersLogoutMsg = inactiveUsers.map((i) => (
           {
@@ -22,7 +22,7 @@ function removeInactiveParticipants() {
             time: dayjs(Date.now()).format('HH:mm:ss'),
           }
         ));
-        await messageService.createMsgs(inactiveUsersLogoutMsg);
+        await messageRepository.createMsgs(inactiveUsersLogoutMsg);
       }
     } catch (err) {
       console.log(err.message);
